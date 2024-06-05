@@ -1,0 +1,52 @@
+.pricecal-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.image-container {
+  border: 8px solid rgb(232 232 232 / 93%);
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #f0f0f0;
+}
+
+.image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+.form-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+  .pricecal-container {
+    flex-direction: column;
+  }
+  .image-container {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .pricecal-container {
+    padding: 1rem;
+  }
+  .form-container {
+    gap: 0.5rem;
+  }
+  .image-container {
+    display: none;
+  }
+}

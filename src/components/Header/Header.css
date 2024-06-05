@@ -12,12 +12,17 @@
 
 .h-menu {
   gap: 2rem;
+  color: aliceblue;
 }
 .h-menu > *:hover {
   cursor: pointer;
 }
 .menu-icon {
   display: none;
+}
+.navlink {
+  color: white; 
+  /* or any color you want */
 }
 
 @media (max-width: 768px) {
@@ -39,5 +44,9 @@
     align-items: flex-start;
     padding: 3rem;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  }
+  .navlink {
+    color: black; 
+    /* or any color you want */
   }
 }
