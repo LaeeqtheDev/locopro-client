@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     domain="dev-v2bun34tq2xngo6t.us.auth0.com"
     clientId="JFCTFS5Sh3klGN0duLc5wk1E1QV2xdcz"
     authorizationParams={{
-      redirect_uri:"http://localhost:5173"
+      redirect_uri:"https://locopro-client.vercel.app"
     }}
     audience="http://localhost:8000"
     scope="openid profile email"
