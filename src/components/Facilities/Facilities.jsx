@@ -35,9 +35,9 @@ const Facilities = ({
       setPropertyDetails((prev) => ({
         ...prev,
         facilities: {
-          bedrooms: parseInt(bedrooms),  // Ensure bedrooms is parsed as an integer
-          parkings: parseInt(parkings),  // Ensure parkings is parsed as an integer
-          bathrooms: parseInt(bathrooms),  // Ensure bathrooms is parsed as an integer
+          bedrooms: bedrooms.toString(),  // Ensure bedrooms is stored as a string
+          parkings: parkings.toString(),  // Ensure parkings is stored as a string
+          bathrooms: bathrooms.toString(),  // Ensure bathrooms is stored as a string
         },
       }));
       mutate();
@@ -52,9 +52,9 @@ const Facilities = ({
     mutationFn: () => createResidency({
       ...propertyDetails,
       facilities: {
-        bedrooms: parseInt(bedrooms),  // Ensure bedrooms is parsed as an integer
-        parkings: parseInt(parkings),  // Ensure parkings is parsed as an integer
-        bathrooms: parseInt(bathrooms),  // Ensure bathrooms is parsed as an integer
+        bedrooms: bedrooms.toString(),  // Ensure bedrooms is stored as a string
+        parkings: parkings.toString(),  // Ensure parkings is stored as a string
+        bathrooms: bathrooms.toString(),  // Ensure bathrooms is stored as a string
       },
     }, token),
     onError: ({ response }) => toast.error(response.data.message, { position: "bottom-right" }),
@@ -69,9 +69,9 @@ const Facilities = ({
         address: "",
         image: null,
         facilities: {
-          bedrooms: 0,
-          parkings: 0,
-          bathrooms: 0,
+          bedrooms: "0",  // Initialize as string "0" for consistency with database
+          parkings: "0",  // Initialize as string "0" for consistency with database
+          bathrooms: "0",  // Initialize as string "0" for consistency with database
         },
         userEmail: user?.email,
       });
