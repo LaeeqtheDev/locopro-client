@@ -1,92 +1,78 @@
+// AddLocation.jsx
 import React from "react";
-import { useForm } from "@mantine/form";
-import { validateString } from "../../utils/common";
-import { Button, Group, Select, TextInput } from "@mantine/core";
+import { useForm } from "react-hook-form";
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import useCountries from "../../hooks/useCountries";
 import Map from "../Map/Map";
 
 const AddLocation = ({ propertyDetails, setPropertyDetails, nextStep }) => {
   const { getAll } = useCountries();
-  const form = useForm({
-    initialValues: {
-      country: propertyDetails?.country,
-      city: propertyDetails?.city,
-      address: propertyDetails?.address,
-    },
-
-    validate: {
-      country: (value) => validateString(value),
-      city: (value) => validateString(value),
-      address: (value) => validateString(value),
-    },
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      country: propertyDetails?.country || "Pakistan",
+      city: propertyDetails?.city || "Lahore",
+      address: propertyDetails?.address || "Punjab, Lahore",
+    }
   });
 
+  const onSubmit = (data) => {
+    setPropertyDetails({
+      ...propertyDetails,
+      country: data.country,
+      city: data.city,
+      address: data.address,
+    });
+    nextStep();
+  };
 
-  const { country, city, address } = form.values;
-
-
-  const handleSubmit = ()=> {
-    const {hasErrors} = form.validate();
-    if(!hasErrors) {
-        setPropertyDetails((prev)=> ({...prev, city, address, country}))
-        nextStep()
-    }
-  }
   return (
-    <form
-    onSubmit={(e)=>{
-        e.preventDefault();
-        handleSubmit()
-    }}
-    >
-      <div
-        className="flexCenter"
-        style={{
-          justifyContent: "space-between",
-          gap: "3rem",
-          marginTop: "3rem",
-          flexDirection: "row",
-        }}
-      >
-        {/* left side */}
-        {/* inputs */}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "3rem", flexDirection: "row" }}>
+        {/* Left side - inputs */}
+        <div style={{ flex: 1, gap: "1rem" }}>
+          <FormControl fullWidth>
+            <InputLabel id="country-label">Country</InputLabel>
+            <Select
+              labelId="country-label"
+              {...register("country", { required: true })}
+              error={!!errors.country}
+            >
+              {getAll().map((country) => (
+                <MenuItem key={country.value} value={country.value}>
+                  {country.label}
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.country && <span style={{ color: "red" }}>Country is required</span>}
+          </FormControl>
 
-        <div className="flexColStart" style={{ flex: 1, gap: "1rem" }}>
-          <Select
-            w={"100%"}
-            withAsterisk
-            label="Country"
-            clearable
-            searchable
-            data={getAll()}
-            {...form.getInputProps("country", { type: "input" })}
-          />
-
-          <TextInput
-            w={"100%"}
-            withAsterisk
+          <TextField
+            fullWidth
             label="City"
-            {...form.getInputProps("city", { type: "input" })}
+            {...register("city", { required: true })}
+            error={!!errors.city}
+            helperText={errors.city ? "City is required" : ""}
           />
 
-          <TextInput
-            w={"100%"}
-            withAsterisk
+          <TextField
+            fullWidth
             label="Address"
-            {...form.getInputProps("address", { type: "input" })}
+            {...register("address", { required: true })}
+            error={!!errors.address}
+            helperText={errors.address ? "Address is required" : ""}
           />
         </div>
 
-        {/* right side */}
-
+        {/* Right side - Map */}
         <div style={{ flex: 1 }}>
-          <Map address={address} city={city} country={country} />
+          <Map country={propertyDetails?.country} city={propertyDetails?.city} address={propertyDetails?.address} />
         </div>
       </div>
 
-      <Group position="center" mt={"xl"}>
-        <Button type="submit">Next Step</Button>
-      </Group>
+      {/* Submit Button */}
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "2rem" }}>
+        <Button variant="contained" type="submit">Next Step</Button>
+      </div>
     </form>
   );
 };
