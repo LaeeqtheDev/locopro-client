@@ -5,12 +5,12 @@ import UploadImage from "../UploadImage/UploadImage";
 import BasicDetails from "../BasicDetails/BasicDetails";
 import Facilities from "../Facilities/Facilities";
 import { useAuth0 } from "@auth0/auth0-react";
-import "./AddPropertyModal.css"; // Import your CSS file for custom styles
+// Import CSS file
+import "./AddPropertyModal.css"; // Assuming your CSS file is named styles.css
 
 const AddPropertyModal = ({ opened, setOpened }) => {
-  const { user } = useAuth0();
   const [active, setActive] = useState(0);
-
+  const {user} = useAuth0()
   const [propertyDetails, setPropertyDetails] = useState({
     title: "",
     description: "",
@@ -24,7 +24,7 @@ const AddPropertyModal = ({ opened, setOpened }) => {
       parkings: 0,
       bathrooms: 0,
     },
-    userEmail: user?.email || "default@example.com", // Update with appropriate default email
+    userEmail: "laeeqahmed656@gmail.com",
   });
 
   const steps = ["Location", "Images", "Basics", "Facilities"];
@@ -46,7 +46,6 @@ const AddPropertyModal = ({ opened, setOpened }) => {
       open={opened}
       onClose={() => setOpened(false)}
       aria-labelledby="add-property-modal-title"
-      className="custom-modal" // Add a custom class for styling purposes
     >
       <Container maxWidth="md" maxHeight="lg" className="modal-content">
         <Stepper activeStep={active} alternativeLabel>
@@ -56,46 +55,17 @@ const AddPropertyModal = ({ opened, setOpened }) => {
             </Step>
           ))}
         </Stepper>
-
-        <div className="modal-body"> {/* Apply white background styling here */}
+        <div>
           {active === steps.length ? (
             <div>
               <p>Completed, click back button to get to previous step</p>
             </div>
           ) : (
             <div>
-              {active === 0 && (
-                <AddLocation
-                  propertyDetails={propertyDetails}
-                  setPropertyDetails={setPropertyDetails}
-                  nextStep={nextStep}
-                />
-              )}
-              {active === 1 && (
-                <UploadImage
-                  propertyDetails={propertyDetails}
-                  setPropertyDetails={setPropertyDetails}
-                  nextStep={nextStep}
-                  prevStep={prevStep}
-                />
-              )}
-              {active === 2 && (
-                <BasicDetails
-                  propertyDetails={propertyDetails}
-                  setPropertyDetails={setPropertyDetails}
-                  nextStep={nextStep}
-                  prevStep={prevStep}
-                />
-              )}
-              {active === 3 && (
-                <Facilities
-                  propertyDetails={propertyDetails}
-                  setPropertyDetails={setPropertyDetails}
-                  setOpened={setOpened}
-                  setActiveStep={setActive}
-                  prevStep={prevStep}
-                />
-              )}
+              {active === 0 && <AddLocation propertyDetails={propertyDetails} setPropertyDetails={setPropertyDetails} nextStep={nextStep}/>}
+              {active === 1 && <UploadImage propertyDetails={propertyDetails} setPropertyDetails={setPropertyDetails} nextStep={nextStep} prevStep={prevStep}/>}
+              {active === 2 && <BasicDetails propertyDetails={propertyDetails} setPropertyDetails={setPropertyDetails} nextStep={nextStep} prevStep={prevStep}/> }
+              {active === 3 && <Facilities propertyDetails={propertyDetails} setPropertyDetails={setPropertyDetails} nextStep={nextStep} prevStep={prevStep} />}
             </div>
           )}
         </div>
