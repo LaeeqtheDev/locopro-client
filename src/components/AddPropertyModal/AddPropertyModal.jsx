@@ -5,7 +5,7 @@ import UploadImage from "../UploadImage/UploadImage";
 import BasicDetails from "../BasicDetails/BasicDetails";
 import Facilities from "../Facilities/Facilities";
 import { useAuth0 } from "@auth0/auth0-react";
-import "./AddPropertyModal.css"
+import "./AddPropertyModal.css"; // Import your CSS file for custom styles
 
 const AddPropertyModal = ({ opened, setOpened }) => {
   const { user } = useAuth0();
@@ -24,7 +24,7 @@ const AddPropertyModal = ({ opened, setOpened }) => {
       parkings: 0,
       bathrooms: 0,
     },
-    userEmail: "laeeqahmed656@gmail.com",
+    userEmail: user?.email || "default@example.com", // Update with appropriate default email
   });
 
   const steps = ["Location", "Images", "Basics", "Facilities"];
@@ -42,8 +42,13 @@ const AddPropertyModal = ({ opened, setOpened }) => {
   };
 
   return (
-    <Modal open={opened} onClose={() => setOpened(false)} aria-labelledby="add-property-modal-title">
-      <Container maxWidth="md" maxHeight="lg">
+    <Modal
+      open={opened}
+      onClose={() => setOpened(false)}
+      aria-labelledby="add-property-modal-title"
+      className="custom-modal" // Add a custom class for styling purposes
+    >
+      <Container maxWidth="md" maxHeight="lg" className="modal-content">
         <Stepper activeStep={active} alternativeLabel>
           {steps.map((label, index) => (
             <Step key={label}>
@@ -52,46 +57,48 @@ const AddPropertyModal = ({ opened, setOpened }) => {
           ))}
         </Stepper>
 
-        {active === steps.length ? (
-          <div>
-            <p>Completed, click back button to get to previous step</p>
-          </div>
-        ) : (
-          <div>
-            {active === 0 && (
-              <AddLocation
-                propertyDetails={propertyDetails}
-                setPropertyDetails={setPropertyDetails}
-                nextStep={nextStep}
-              />
-            )}
-            {active === 1 && (
-              <UploadImage
-                propertyDetails={propertyDetails}
-                setPropertyDetails={setPropertyDetails}
-                nextStep={nextStep}
-                prevStep={prevStep}
-              />
-            )}
-            {active === 2 && (
-              <BasicDetails
-                propertyDetails={propertyDetails}
-                setPropertyDetails={setPropertyDetails}
-                nextStep={nextStep}
-                prevStep={prevStep}
-              />
-            )}
-            {active === 3 && (
-              <Facilities
-                propertyDetails={propertyDetails}
-                setPropertyDetails={setPropertyDetails}
-                setOpened={setOpened}
-                setActiveStep={setActive}
-                prevStep={prevStep}
-              />
-            )}
-          </div>
-        )}
+        <div className="modal-body"> {/* Apply white background styling here */}
+          {active === steps.length ? (
+            <div>
+              <p>Completed, click back button to get to previous step</p>
+            </div>
+          ) : (
+            <div>
+              {active === 0 && (
+                <AddLocation
+                  propertyDetails={propertyDetails}
+                  setPropertyDetails={setPropertyDetails}
+                  nextStep={nextStep}
+                />
+              )}
+              {active === 1 && (
+                <UploadImage
+                  propertyDetails={propertyDetails}
+                  setPropertyDetails={setPropertyDetails}
+                  nextStep={nextStep}
+                  prevStep={prevStep}
+                />
+              )}
+              {active === 2 && (
+                <BasicDetails
+                  propertyDetails={propertyDetails}
+                  setPropertyDetails={setPropertyDetails}
+                  nextStep={nextStep}
+                  prevStep={prevStep}
+                />
+              )}
+              {active === 3 && (
+                <Facilities
+                  propertyDetails={propertyDetails}
+                  setPropertyDetails={setPropertyDetails}
+                  setOpened={setOpened}
+                  setActiveStep={setActive}
+                  prevStep={prevStep}
+                />
+              )}
+            </div>
+          )}
+        </div>
       </Container>
     </Modal>
   );
