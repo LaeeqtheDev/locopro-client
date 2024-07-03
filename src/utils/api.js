@@ -24,7 +24,7 @@ export const getAllProperties = async () => {
 
 export const getProperty = async (id) => {
   try {
-    const response = await api.get(`/residency/${id}`, {
+    const response = await api.get(/residency/${id}, {
       timeout: 10 * 1000,
     });
 
@@ -41,7 +41,7 @@ export const getProperty = async (id) => {
 export const createUser = async (email, token) => {
   try {
     await api.post(
-      `/user/register`,
+      /user/register,
       { email });
   } catch (error) {
     toast.error("Something went wrong, Please try again");
@@ -52,7 +52,7 @@ export const createUser = async (email, token) => {
 export const bookVisit = async (date, propertyId, email) => {
   try {
     await api.post(
-      `/user/bookVisit/${propertyId}`,
+      /user/bookVisit/${propertyId},
       {
         email,
         id: propertyId,
@@ -68,13 +68,13 @@ export const bookVisit = async (date, propertyId, email) => {
 export const removeBooking = async (id, email, token) => {
   try {
     await api.post(
-      `/user/removeBooking/${id}`,
+      /user/removeBooking/${id},
       {
         email,
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: Bearer ${token},
         },
       }
     );
@@ -88,13 +88,13 @@ export const removeBooking = async (id, email, token) => {
 export const toFav = async (id, email, token) => {
   try {
     await api.post(
-      `/user/toFav/${id}`,
+      /user/toFav/${id},
       {
         email,
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: Bearer ${token},
         },
       }
     );
@@ -109,13 +109,13 @@ export const getAllFav = async (email, token) => {
   try{
 
     const res = await api.post(
-      `/user/allFav`,
+      /user/allFav,
       {
         email,
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: Bearer ${token},
         },
       }
     );
@@ -135,13 +135,13 @@ export const getAllBookings = async (email, token) => {
   if(!token) return 
   try {
     const res = await api.post(
-      `/user/allBookings`,
+      /user/allBookings,
       {
         email,
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: Bearer ${token},
         },
       }
     );
@@ -156,23 +156,21 @@ export const getAllBookings = async (email, token) => {
 
 
 export const createResidency = async (data, token) => {
-  console.log('Data being sent:', data);
-
-  try {
-    const res = await axios.post(
-      'https://locopro-server.vercel.app/api/residency/create',
-      { data },
+  console.log(data)
+  try{
+    const res = await api.post(
+      /residency/create,
+      {
+        data
+      },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+          Authorization: Bearer ${token},
         },
       }
-    );
-    console.log('Response:', res.data);
-    return res.data;
-  } catch (error) {
-    console.error('Error response:', error.response ? error.response.data : error.message);
-    throw error.response ? error.response.data : new Error('Server Error');
+    )
+  }catch(error)
+  {
+    throw error
   }
-};
+}
