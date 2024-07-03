@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Group, NumberInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import UserDetailContext from "../../context/UserDetailContext";
 import useProperties from "../../hooks/useProperties";
@@ -34,11 +34,7 @@ const Facilities = ({
     if (!hasErrors) {
       setPropertyDetails((prev) => ({
         ...prev,
-        facilities: {
-          bedrooms: bedrooms.toString(),  // Ensure bedrooms is stored as a string
-          parkings: parkings.toString(),  // Ensure parkings is stored as a string
-          bathrooms: bathrooms.toString(),  // Ensure bathrooms is stored as a string
-        },
+        facilities: { bedrooms, parkings, bathrooms },
       }));
       mutate();
     }
@@ -51,11 +47,7 @@ const Facilities = ({
   const { mutate, isLoading } = useMutation({
     mutationFn: () => createResidency({
       ...propertyDetails,
-      facilities: {
-        bedrooms: bedrooms.toString(),  // Ensure bedrooms is stored as a string
-        parkings: parkings.toString(),  // Ensure parkings is stored as a string
-        bathrooms: bathrooms.toString(),  // Ensure bathrooms is stored as a string
-      },
+      facilities: { bedrooms, parkings, bathrooms },
     }, token),
     onError: ({ response }) => toast.error(response.data.message, { position: "bottom-right" }),
     onSettled: () => {
@@ -69,9 +61,9 @@ const Facilities = ({
         address: "",
         image: null,
         facilities: {
-          bedrooms: "0",  // Initialize as string "0" for consistency with database
-          parkings: "0",  // Initialize as string "0" for consistency with database
-          bathrooms: "0",  // Initialize as string "0" for consistency with database
+          bedrooms: 0,
+          parkings: 0,
+          bathrooms: 0,
         },
         userEmail: user?.email,
       });
@@ -82,47 +74,38 @@ const Facilities = ({
   });
 
   return (
-    <Box maxWidth="30%" mx="auto" my={2}>
-      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-        <TextField
+    <Box maw="30%" mx="auto" my="sm">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
+        <NumberInput
+          withAsterisk
           label="No of Bedrooms"
-          type="number"
-          fullWidth
-          required
-          error={!!form.errors.bedrooms}
-          helperText={form.errors.bedrooms}
+          min={0}
           {...form.getInputProps("bedrooms")}
-          margin="normal"
         />
-        <TextField
+        <NumberInput
           label="No of Parkings"
-          type="number"
-          fullWidth
-          error={!!form.errors.parkings}
-          helperText={form.errors.parkings}
+          min={0}
           {...form.getInputProps("parkings")}
-          margin="normal"
         />
-        <TextField
+        <NumberInput
+          withAsterisk
           label="No of Bathrooms"
-          type="number"
-          fullWidth
-          required
-          error={!!form.errors.bathrooms}
-          helperText={form.errors.bathrooms}
+          min={0}
           {...form.getInputProps("bathrooms")}
-          margin="normal"
         />
-        <Grid container spacing={2} justifyContent="center" marginTop={2}>
-          <Grid item>
-            <Button variant="outlined" onClick={prevStep}>Back</Button>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" type="submit" color="primary" disabled={isLoading}>
-              {isLoading ? "Submitting" : "Add Property"}
-            </Button>
-          </Grid>
-        </Grid>
+        <Group position="center" mt="xl">
+          <Button variant="default" onClick={prevStep}>
+            Back
+          </Button>
+          <Button type="submit" color="green" disabled={isLoading}>
+            {isLoading ? "Submitting" : "Add Property"}
+          </Button>
+        </Group>
       </form>
     </Box>
   );
