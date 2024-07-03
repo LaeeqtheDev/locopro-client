@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Box, Button, Group, NumberInput } from "@mantine/core";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import { useForm } from "@mantine/form";
 import UserDetailContext from "../../context/UserDetailContext";
 import useProperties from "../../hooks/useProperties";
@@ -49,7 +49,7 @@ const Facilities = ({
       ...propertyDetails,
       facilities: { bedrooms, parkings, bathrooms },
     }, token),
-    onError: ({ response }) => toast.error(response.data.message, { position: "bottom-right" }),
+    onError: ({ response }) => toast.error(response?.data?.message || "An error occurred", { position: "bottom-right" }),
     onSettled: () => {
       toast.success("Added Successfully", { position: "bottom-right" });
       setPropertyDetails({
@@ -74,38 +74,47 @@ const Facilities = ({
   });
 
   return (
-    <Box maw="30%" mx="auto" my="sm">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit();
-        }}
-      >
-        <NumberInput
-          withAsterisk
+    <Box maxWidth="30%" mx="auto" my={2}>
+      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+        <TextField
           label="No of Bedrooms"
-          min={0}
+          type="number"
+          fullWidth
+          required
+          error={!!form.errors.bedrooms}
+          helperText={form.errors.bedrooms}
           {...form.getInputProps("bedrooms")}
+          margin="normal"
         />
-        <NumberInput
+        <TextField
           label="No of Parkings"
-          min={0}
+          type="number"
+          fullWidth
+          error={!!form.errors.parkings}
+          helperText={form.errors.parkings}
           {...form.getInputProps("parkings")}
+          margin="normal"
         />
-        <NumberInput
-          withAsterisk
+        <TextField
           label="No of Bathrooms"
-          min={0}
+          type="number"
+          fullWidth
+          required
+          error={!!form.errors.bathrooms}
+          helperText={form.errors.bathrooms}
           {...form.getInputProps("bathrooms")}
+          margin="normal"
         />
-        <Group position="center" mt="xl">
-          <Button variant="default" onClick={prevStep}>
-            Back
-          </Button>
-          <Button type="submit" color="green" disabled={isLoading}>
-            {isLoading ? "Submitting" : "Add Property"}
-          </Button>
-        </Group>
+        <Grid container spacing={2} justifyContent="center" marginTop={2}>
+          <Grid item>
+            <Button variant="outlined" onClick={prevStep}>Back</Button>
+          </Grid>
+          <Grid item>
+            <Button variant="contained" type="submit" color="primary" disabled={isLoading}>
+              {isLoading ? "Submitting" : "Add Property"}
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </Box>
   );
