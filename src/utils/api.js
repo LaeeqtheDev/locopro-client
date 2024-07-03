@@ -156,21 +156,23 @@ export const getAllBookings = async (email, token) => {
 
 
 export const createResidency = async (data, token) => {
-  console.log(data)
-  try{
-    const res = await api.post(
-      `/residency/create`,
-      {
-        data
-      },
+  console.log('Data being sent:', data);
+
+  try {
+    const res = await axios.post(
+      'https://locopro-server.vercel.app/api/residency/create',
+      { data },
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
       }
-    )
-  }catch(error)
-  {
-    throw error
+    );
+    console.log('Response:', res.data);
+    return res.data;
+  } catch (error) {
+    console.error('Error response:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('Server Error');
   }
-}
+};
