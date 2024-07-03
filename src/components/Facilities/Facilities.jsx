@@ -34,7 +34,11 @@ const Facilities = ({
     if (!hasErrors) {
       setPropertyDetails((prev) => ({
         ...prev,
-        facilities: { bedrooms, parkings, bathrooms },
+        facilities: {
+          bedrooms: bedrooms.toString(),  // Ensure bedrooms is stored as a string
+          parkings: parkings.toString(),  // Ensure parkings is stored as a string
+          bathrooms: bathrooms.toString(),  // Ensure bathrooms is stored as a string
+        },
       }));
       mutate();
     }
@@ -47,9 +51,13 @@ const Facilities = ({
   const { mutate, isLoading } = useMutation({
     mutationFn: () => createResidency({
       ...propertyDetails,
-      facilities: { bedrooms, parkings, bathrooms },
+      facilities: {
+        bedrooms: bedrooms.toString(),  // Ensure bedrooms is stored as a string
+        parkings: parkings.toString(),  // Ensure parkings is stored as a string
+        bathrooms: bathrooms.toString(),  // Ensure bathrooms is stored as a string
+      },
     }, token),
-    onError: ({ response }) => toast.error(response?.data?.message || "An error occurred", { position: "bottom-right" }),
+    onError: ({ response }) => toast.error(response.data.message, { position: "bottom-right" }),
     onSettled: () => {
       toast.success("Added Successfully", { position: "bottom-right" });
       setPropertyDetails({
@@ -61,9 +69,9 @@ const Facilities = ({
         address: "",
         image: null,
         facilities: {
-          bedrooms: 0,
-          parkings: 0,
-          bathrooms: 0,
+          bedrooms: "0",  // Initialize as string "0" for consistency with database
+          parkings: "0",  // Initialize as string "0" for consistency with database
+          bathrooms: "0",  // Initialize as string "0" for consistency with database
         },
         userEmail: user?.email,
       });
