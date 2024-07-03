@@ -1,4 +1,3 @@
-// AddLocation.jsx
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
@@ -16,12 +15,12 @@ const AddLocation = ({ propertyDetails, setPropertyDetails, nextStep }) => {
   });
 
   const onSubmit = (data) => {
-    setPropertyDetails({
-      ...propertyDetails,
+    setPropertyDetails((prev) => ({
+      ...prev,
       country: data.country,
       city: data.city,
       address: data.address,
-    });
+    }));
     nextStep();
   };
 
@@ -29,11 +28,12 @@ const AddLocation = ({ propertyDetails, setPropertyDetails, nextStep }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div style={{ display: "flex", justifyContent: "space-between", marginTop: "3rem", flexDirection: "row" }}>
         {/* Left side - inputs */}
-        <div style={{ flex: 1, gap: "1rem" }}>
+        <div style={{ flex: 1, gap: "1rem", display: "flex", flexDirection: "column" }}>
           <FormControl fullWidth>
             <InputLabel id="country-label">Country</InputLabel>
             <Select
               labelId="country-label"
+              label="Country"
               {...register("country", { required: true })}
               error={!!errors.country}
             >
