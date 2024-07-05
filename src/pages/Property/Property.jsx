@@ -149,7 +149,7 @@ const Property = () => {
                   validateLogin() && setModalOpened(true);
                 }}
               >
-                Book your visit
+                Book your Inspection
               </button>
             )}
 
